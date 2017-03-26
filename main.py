@@ -9,59 +9,86 @@ pygame.init()
 
 # Global Variables
 window_size = width, height = 640, 480
+screen = pygame.display.set_mode(window_size)
+screen_colour = 34, 177, 76
 my_font = pygame.font.SysFont("monospace", 16)
 
-def run():	
-	# Load window
-	running = True
-	screen_colour = 34, 177, 76
-	screen = pygame.display.set_mode(window_size)
+preyList = [] # List of Prey
+predList = [] # List of Predators
+labels = [] # List of Labels
+buttons = [] # List of Buttons
+
+def init():
+	#Load Window
 	pygame.display.set_caption('The Predator Simulator')
 	pygame.mouse.set_visible(1) #Debateable on whether it's neccesary
-	# Load Logic Variables
-	simulation = 1
-	prey_count = 1
-	pred_count = 1
 	# Load Assets
 	## Objects
-	prey1 = Prey(1, pygame.image.load("images/prey.png").convert(), [10, 10])
-	predator1 = Predator(1, pygame.image.load("images/predator.png").convert(), [10, 420])
-	start = Button("Start", (480,450))
-	## Text
-	sim_label = my_font.render("#Simulation " + str(simulation), 1, (0,0,0))
-	prey_label = my_font.render("Prey:       " + str(prey_count), 1, (0,0,0))
-	pred_label = my_font.render("Predators:  " + str(pred_count), 1, (0,0,0))
+	preyList.append(Prey(1, pygame.image.load("images/prey.png").convert(), [10, 10]))
+	predList.append(Predator(1, pygame.image.load("images/predator.png").convert(), [10, 420]))
+	## Labels
+	labels.append(Label("#Simulation 1", (480, 380)))
+	labels.append(Label("Prey:       " + str(len(preyList)), (480, 400)))
+	labels.append(Label("Predators:  " + str(len(predList)), (480, 420)))
+	# Buttons
+	buttons.append(Button("Start", (480,450)))
+	
+def logic(simulation):
+	# Logic
+	for predator in predList:
+		predator.move()
+	for prey in predList:
+		prey.move()
+		
+	labels[0].update("#Simulation " + str(simulation)) # Move when required
+	
+def draw():
+	# Render
+	## Draw order
+	screen.fill(screen_colour)
+	### Objects
+	for predator in predList:
+		predator.draw(screen)
+	for prey in preyList:
+		prey.draw(screen)
+	for label in labels:
+		label.draw(screen)
+	for button in buttons:
+		button.draw(screen)
+	## Actual Draw
+	pygame.display.update()
+	pygame.time.delay(33) # AVG 30FPS
+		
+def run(simulation):	
+	running = True
+	init()
 	
 	while(running):
 		for event in pygame.event.get():
 			if event.type == pygame.MOUSEBUTTONDOWN:
-				if (check_collision(pygame.mouse.get_pos(), start.get_pos())):
+				if (check_collision(pygame.mouse.get_pos(), buttons[0].get_pos())):
 					# Technically start game
-					prey1.update_speed(1, 1)
+					for prey in preyList:
+						prey.update_speed(1, 1)
+					simulation += 1
 			if event.type == pygame.QUIT: 
 				# Stops the program running
 				sys.exit()
 				running = False
-		
-		# Logic
-		predator1.move()
-		prey1.move()
-		# Render
-		## Draw order
-		screen.fill(screen_colour)
-		### Objects
-		prey1.draw(screen)
-		predator1.draw(screen)
-		### Labels
-		screen.blit(sim_label, (480, 380))
-		screen.blit(prey_label, (480, 400))
-		screen.blit(pred_label, (480, 420))
-		start.draw(screen)
-		## Actual Draw
-		pygame.display.update()
-		pygame.time.delay(33) # AVG 30FPS
-		
+		logic(simulation)
+		draw()
 
+class Label(object):
+	def __init__(self, text, pos):
+		self.pos = pos
+		self.obj = my_font.render(text, 1, (0,0,0))
+	
+	def update(self, text):
+		self.obj = my_font.render(text, 1, (0,0,0))
+	
+	def draw(self, screen):
+		screen.blit(self.obj, self.pos)
+		
 class Button(object):
 	def __init__(self, text, pos):
 		size = len(text)*20
@@ -83,4 +110,4 @@ def check_collision(obj1, obj2):
 		return True
 	return False
 		
-run()
+run(1)
