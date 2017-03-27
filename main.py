@@ -4,7 +4,8 @@ from predator import Predator
 from prey import Prey
 
 # GUI
-import sys, pygame
+import sys 
+import pygame
 pygame.init()
 
 # Global Variables
@@ -37,11 +38,9 @@ def logic(simulation):
 	# Logic
 	for predator in predList:
 		predator.move()
-	for prey in predList:
+	for prey in preyList:
 		prey.move()
 		
-	labels[0].update("#Simulation " + str(simulation)) # Move when required
-	
 def draw():
 	# Render
 	## Draw order
@@ -59,23 +58,27 @@ def draw():
 	pygame.display.update()
 	pygame.time.delay(33) # AVG 30FPS
 		
-def run(simulation):	
+def main():	
 	running = True
+	simulation = 1
 	init()
 	
 	while(running):
 		for event in pygame.event.get():
 			if event.type == pygame.MOUSEBUTTONDOWN:
-				if (check_collision(pygame.mouse.get_pos(), buttons[0].get_pos())):
+				if (check_collision((pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1], 1, 1), buttons[0].get_pos())):
 					# Technically start game
 					for prey in preyList:
 						prey.update_speed(1, 1)
-					simulation += 1
+					predList[0].select_logic(len(predList), len(preyList))
 			if event.type == pygame.QUIT: 
 				# Stops the program running
 				sys.exit()
 				running = False
 		logic(simulation)
+		if(check_end_condition()):
+			simulation = next_simulation(simulation)
+
 		draw()
 
 class Label(object):
@@ -105,9 +108,23 @@ class Button(object):
 		screen.blit(self.text, self.pos)
 		
 def check_collision(obj1, obj2):
-	if(obj1[0] > obj2[0] and obj1[1] > obj2[1] and
+	if((obj1[0] + obj1[2]) > obj2[0] and (obj1[1] + obj1[3]) > obj2[1] and
 	obj1[0] < (obj2[0] + obj2[2]) and obj1[1] < (obj2[1] + obj2[3])):
 		return True
 	return False
-		
-run(1)
+
+def check_end_condition():
+	for prey in preyList:
+		temp_pos = prey.get_pos()
+		if (temp_pos[0] > 0 and temp_pos[1] > 0 and 
+		temp_pos[0] < window_size[0] and temp_pos[1] < window_size[1]):
+			return False
+	return True
+
+def next_simulation(simulation):
+	labels[0].update("#Simulation " + str(simulation + 1)) # Move when required
+	for prey in preyList:
+		prey.reset()
+	return simulation + 1
+	
+main()
