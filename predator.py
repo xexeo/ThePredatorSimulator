@@ -23,12 +23,12 @@ class Predator:
 		self.rect = self.rect.move(pos)
 		self.origRect = self.rect.copy()
 
-	def select_logic(self, predCount, preyCount):
+	def select_logic(self, predCount, preyCount, match_percentage):
 		tempBehaviour = 1
-		self.case = self.logic.get_case(tempBehaviour, predCount, preyCount)
+		self.case = self.logic.get_case(match_percentage, tempBehaviour, predCount, preyCount)
 		while(self.case == False and tempBehaviour < 7):
 			tempBehaviour += 1
-			self.case = self.logic.get_case(tempBehaviour, predCount, preyCount)
+			self.case = self.logic.get_case(match_percentage, tempBehaviour, predCount, preyCount)
 			if (self.case != False):
 				self.match = self.case
 				self.case = self.case.get_result()

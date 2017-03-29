@@ -37,7 +37,7 @@ class Case_Based_Reasoning(object):
 	def add_case(self, behaviour, preyCount, predCount, result):
 		self.cases.append(self.Case(behaviour, preyCount, predCount, result))
 
-	def get_case(self, behaviour, preyCount, predCount):
+	def get_case(self, match_percentage, behaviour, preyCount, predCount):
 		tempList = []
 		for case in self.cases:
 			# Need an algorithm to get match percentage
@@ -45,7 +45,7 @@ class Case_Based_Reasoning(object):
 			match += self.check_match(predCount, case.get_pred_count())
 			match += self.check_match(preyCount, case.get_prey_count())
 			match = round(match/3, 0)
-			if (match >= 90): # Only select closests matches
+			if (match >= match_percentage): # Only select closests matches
 				tempList.append((match, case))
 		# Order list and return best match
 		if (len(tempList) > 0):
