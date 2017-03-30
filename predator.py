@@ -11,9 +11,8 @@ from A_star import AStar
 # 6 - Right, Slow
 
 class Predator:
-	def __init__(self, id, image, pos, window_size):
+	def __init__(self, image, pos, window_size):
 		## Parameters
-		self.id = id
 		self.speed = [2, 2]
 		self.logic = Case_Based_Reasoning()
 		self.route = AStar(window_size)
@@ -34,16 +33,16 @@ class Predator:
 				self.case = self.case.get_result()
 		if (self.case == True):
 			print("Choice A")
-			self.route.new_route(self.match.get_behaviour())
+			self.route.new_route(self.rect,self.match.get_behaviour())
 		else:
 			print("Choice B")
-			self.route.new_route(1)
+			self.route.new_route(self.rect, 1)
 		
 	def update_speed(self, x, y):
 		self.speed = [x, y]
 	
 	def move(self):
-		self.rect = self.rect.move([0,0])
+		self.rect = self.rect.move(self.route.move_to_node(self.rect, self.speed))
 	
 	def reset(self):
 		self.rect = self.origRect.copy()

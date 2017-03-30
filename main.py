@@ -1,4 +1,6 @@
 #The file will hold all the main methods and bring the program together
+# TODO: Random spawning - within an area (Prey and Predators)
+
 # Additional files
 from predator import Predator
 from prey import Prey
@@ -25,8 +27,8 @@ def init():
 	pygame.mouse.set_visible(1) #Debateable on whether it's neccesary
 	# Load Assets
 	## Objects
-	preyList.append(Prey(1, pygame.image.load("images/prey.png").convert(), [10, 10]))
-	predList.append(Predator(1, pygame.image.load("images/predator.png").convert(), [10, 420], window_size))
+	preyList.append(Prey(pygame.image.load("images/prey.png").convert(), [10, 10]))
+	predList.append(Predator(pygame.image.load("images/predator.png").convert(), [10, 420], window_size))
 	## Labels
 	labels.append(Label("#Simulation 1" , (480, 356)))
 	labels.append(Label("Prey        " + str(len(preyList)), (480, 378)))
@@ -85,17 +87,18 @@ def main():
 				elif (check_collision(mouse_pos, buttons[1].get_pos())): 
 					preyList.remove(preyList[0])
 				elif (check_collision(mouse_pos, buttons[2].get_pos())): 
-					preyList.append(Prey(1, pygame.image.load("images/prey.png").convert(), [10, 10]))
+					preyList.append(Prey(pygame.image.load("images/prey.png").convert(), [10, 10]))
 				# Update Predators
 				elif (check_collision(mouse_pos, buttons[3].get_pos())): 
 					predList.remove(predList[0])
 				elif (check_collision(mouse_pos, buttons[4].get_pos())): 
-					predList.append(Predator(1, pygame.image.load("images/predator.png").convert(), [10, 420], window_size))
+					predList.append(Predator(pygame.image.load("images/predator.png").convert(), [10, 420], window_size))
 				# Update Match Percentage
 				elif (check_collision(mouse_pos, buttons[5].get_pos())):
 					match_percentage -= 1
 				elif (check_collision(mouse_pos, buttons[6].get_pos())):
 					match_percentage += 1
+				# Update label values
 				labels[1].update("Prey        " + str(len(preyList)))
 				labels[2].update("Predators   " + str(len(predList)))
 				labels[3].update("Match     " + str(match_percentage) + "%")
@@ -106,7 +109,6 @@ def main():
 		logic(simulation)
 		if(check_end_condition()):
 			simulation = next_simulation(simulation)
-
 		draw()
 
 class Label(object):
@@ -132,7 +134,7 @@ class Button(object):
 	
 	def draw(self, screen):
 		pygame.draw.rect(screen, (212,208,200), self.rect)
-		pygame.draw.rect(screen, (0,0,0), self.rect, 2)
+		pygame.draw.rect(screen, (0,0,0), self.rect, 1)
 		screen.blit(self.text, self.pos)
 		
 def check_collision(obj1, obj2):

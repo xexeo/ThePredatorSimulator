@@ -1,8 +1,7 @@
 #This file will maintain the prey class
 class Prey(object):
-	def __init__(self, id, image, pos):
+	def __init__(self, image, pos):
 		## Parameters
-		self.id = id
 		self.speed = [0, 0]
 		## Imagery
 		self.image = image
