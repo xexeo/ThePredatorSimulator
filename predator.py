@@ -11,12 +11,12 @@ from A_star import AStar
 # 6 - Right, Slow
 
 class Predator:
-	def __init__(self, id, image, pos):
+	def __init__(self, id, image, pos, window_size):
 		## Parameters
 		self.id = id
 		self.speed = [2, 2]
 		self.logic = Case_Based_Reasoning()
-		self.route = AStar()
+		self.route = AStar(window_size)
 		## Imagery
 		self.image = image
 		self.rect = image.get_rect()

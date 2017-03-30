@@ -8,12 +8,12 @@
 class Case_Based_Reasoning(object):
 	def __init__(self):
 		self.cases = []
-		self.add_case(3, 2, 1, True)
-		self.add_case(2, 5, 2, True)
-		self.add_case(1, 1, 1, False)
-		self.add_case(1, 2, 1, False)
-		self.add_case(2, 3, 3, False)
-		self.add_case(6, 1, 1, True)
+		#self.add_case(3, 2, 1, True)
+		#self.add_case(2, 5, 2, True)
+		#self.add_case(1, 1, 1, False)
+		#self.add_case(1, 2, 1, False)
+		#self.add_case(2, 3, 3, False)
+		#self.add_case(6, 1, 1, True)
 	
 	class Case(object):
 		def __init__(self, behaviour, preyCount, predCount, result):

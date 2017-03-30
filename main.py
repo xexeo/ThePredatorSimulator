@@ -26,7 +26,7 @@ def init():
 	# Load Assets
 	## Objects
 	preyList.append(Prey(1, pygame.image.load("images/prey.png").convert(), [10, 10]))
-	predList.append(Predator(1, pygame.image.load("images/predator.png").convert(), [10, 420]))
+	predList.append(Predator(1, pygame.image.load("images/predator.png").convert(), [10, 420], window_size))
 	## Labels
 	labels.append(Label("#Simulation 1" , (480, 356)))
 	labels.append(Label("Prey        " + str(len(preyList)), (480, 378)))
@@ -90,7 +90,7 @@ def main():
 				elif (check_collision(mouse_pos, buttons[3].get_pos())): 
 					predList.remove(predList[0])
 				elif (check_collision(mouse_pos, buttons[4].get_pos())): 
-					predList.append(Predator(1, pygame.image.load("images/predator.png").convert(), [10, 420]))
+					predList.append(Predator(1, pygame.image.load("images/predator.png").convert(), [10, 420], window_size))
 				# Update Match Percentage
 				elif (check_collision(mouse_pos, buttons[5].get_pos())):
 					match_percentage -= 1
