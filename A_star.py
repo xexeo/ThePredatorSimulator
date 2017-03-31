@@ -30,26 +30,29 @@ class AStar(object):
 		# Generate list of nodes (Route to use)
 		self.behaviour = behaviour
 		#Switch Behaviour: goal = position
-		
+		if (behaviour == 1 or behaviour == 2):
+			goal = (320, 440)
+		elif (behaviour == 3 or behaviour == 4):
+			goal = (40, 220)
+		else:
+			goal = (600, 220)
 		# Use behaviour to determine goal
-		print(orig_pos)
-		#self.route = self.score_nodes(orig_pos, goal)
-		#for node in tempList:
-		#	print(node.get_pos())
+		self.route = self.score_nodes(orig_pos, goal)
+		for node in self.route:
+			print(node.get_pos())
 	
 	def score_nodes(self, orig_pos, goal):
 		route = []
 		nearest_nodes = self.find_nearest_nodes(orig_pos) # Return nearest nodes
 		# While not at goal
-		return route
+			
+		return nearest_nodes
 		
 	def find_nearest_nodes(self, orig_pos):
 		tempList = []
 		for node in self.nodes:
 			pos = node.get_pos()
-			# Need to refine below - as incorrect
-			if ((orig_pos[0] + self.diff) < pos[0] and (pos[0] - self.diff) > orig_pos[0] and
-			(orig_pos[1] + self.diff) < pos[1] and (pos[1] - self.diff) > orig_pos[1]):
+			if (check_collision((pos[0], pos[1], 20, 20), orig_pos)):
 				tempList.append(node)
 		return tempList
 	
@@ -62,11 +65,11 @@ class AStar(object):
 	def move_to_node(self, orig_pos, speed):
 		# Return direction to next node
 		if (len(self.route) > 0):
-			pos = route[0].get_pos()
+			pos = self.route[0].get_pos()
 			if (len(self.route) > 1):
 				if (orig_pos[0] == pos[0] and orig_pos[1] == pos[1]):
 					self.route.remove(self.route[0])
-				pos = route[0].get_pos()
+				pos = self.route[0].get_pos()
 			dir1 = speed[0]
 			dir2 = speed[1]
 			if (orig_pos[0] < pos[0]):
@@ -78,4 +81,10 @@ class AStar(object):
 			elif(orig_pos[1] == pos[1]):
 				dir2 = 0
 			return (dir1, dir2)
-		return (0, 0)		
+		return (0, 0)
+
+def check_collision(obj1, obj2):
+	if((obj1[0] + obj1[2]) > obj2[0] and (obj1[1] + obj1[3]) > obj2[1] and
+	obj1[0] < (obj2[0] + obj2[2]) and obj1[1] < (obj2[1] + obj2[3])):
+		return True
+	return False		

@@ -8,6 +8,7 @@ from prey import Prey
 # GUI
 import sys 
 import pygame
+import random
 pygame.init()
 
 # Global Variables
@@ -27,8 +28,8 @@ def init():
 	pygame.mouse.set_visible(1) #Debateable on whether it's neccesary
 	# Load Assets
 	## Objects
-	preyList.append(Prey(pygame.image.load("images/prey.png").convert(), [10, 10]))
-	predList.append(Predator(pygame.image.load("images/predator.png").convert(), [10, 420], window_size))
+	new_prey()
+	new_predator()
 	## Labels
 	labels.append(Label("#Simulation 1" , (480, 356)))
 	labels.append(Label("Prey        " + str(len(preyList)), (480, 378)))
@@ -87,12 +88,12 @@ def main():
 				elif (check_collision(mouse_pos, buttons[1].get_pos())): 
 					preyList.remove(preyList[0])
 				elif (check_collision(mouse_pos, buttons[2].get_pos())): 
-					preyList.append(Prey(pygame.image.load("images/prey.png").convert(), [10, 10]))
+					new_prey()
 				# Update Predators
 				elif (check_collision(mouse_pos, buttons[3].get_pos())): 
 					predList.remove(predList[0])
 				elif (check_collision(mouse_pos, buttons[4].get_pos())): 
-					predList.append(Predator(pygame.image.load("images/predator.png").convert(), [10, 420], window_size))
+					new_predator()
 				# Update Match Percentage
 				elif (check_collision(mouse_pos, buttons[5].get_pos())):
 					match_percentage -= 1
@@ -156,5 +157,25 @@ def next_simulation(simulation):
 	for prey in preyList:
 		prey.reset()
 	return simulation + 1
+
+def new_predator():
+	if (len(predList) < 9):
+		x = random.randrange(window_size[0])
+		while (x > 100 and x < 540):
+			x = random.randrange(window_size[0])
+		y = random.randrange(window_size[1])
+		while (y > 60 and y < 380):
+			y = random.randrange(window_size[1])
+		predList.append(Predator(pygame.image.load("images/predator.png").convert(), [x, y], window_size))
+
+def new_prey():
+	if (len(preyList) < 9):
+		x = random.randrange(window_size[0])
+		while (x < 100 or x > 540):
+			x = random.randrange(window_size[0])
+		y = random.randrange(window_size[1])
+		while (y < 60 or y > 380):
+			y = random.randrange(window_size[1])
+		preyList.append(Prey(pygame.image.load("images/prey.png").convert(), [x, y]))	
 	
 main()
