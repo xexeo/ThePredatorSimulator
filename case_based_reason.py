@@ -49,7 +49,6 @@ class Case_Based_Reasoning(object):
 				tempList.append((match, case))
 		# Order list and return best match
 		if (len(tempList) > 0):
-			print(tempList)
 			tempList.sort(reverse = True) # Sort Descending
 			for case in tempList:
 				if(case[1].get_result()):

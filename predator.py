@@ -13,7 +13,7 @@ from A_star import AStar
 class Predator:
 	def __init__(self, image, pos, window_size):
 		## Parameters
-		self.speed = [2, 2]
+		self.speed = [1,1]
 		self.logic = Case_Based_Reasoning()
 		self.route = AStar(window_size)
 		## Imagery
@@ -32,17 +32,20 @@ class Predator:
 				self.match = self.case
 				self.case = self.case.get_result()
 		if (self.case == True):
-			print("Choice A")
+			print("Found a previous case!")
 			self.route.new_route(self.rect,self.match.get_behaviour())
 		else:
-			print("Choice B")
+			print("No case found! Let's see how this goes")
 			self.route.new_route(self.rect, 1)
-		
+	
+	def get_pos(self):
+		return self.rect
+	
 	def update_speed(self, x, y):
 		self.speed = [x, y]
 	
-	def move(self):
-		self.rect = self.rect.move(self.route.move_to_node(self.rect, self.speed))
+	def move(self, prey):
+		self.rect = self.rect.move(self.route.move_to_node(self.rect, self.speed, prey))
 	
 	def reset(self):
 		self.rect = self.origRect.copy()

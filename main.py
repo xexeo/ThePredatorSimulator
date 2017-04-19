@@ -44,10 +44,12 @@ def init():
 	buttons.append(Button("<", (558,422))) # Match Percentage
 	buttons.append(Button(">", (615,422)))
 	
-def logic(simulation):
+def logic():
 	# Logic
 	for predator in predList:
-		predator.move()
+		predator.move(preyList)
+		for prey in preyList:
+			prey.check_nearby(predator)
 	for prey in preyList:
 		prey.move()
 		
@@ -81,8 +83,6 @@ def main():
 				# Cycle through buttons
 				if (check_collision(mouse_pos, buttons[0].get_pos())):
 					# Technically start game
-					for prey in preyList:
-						prey.update_speed(1, 1)
 					predList[0].select_logic(len(predList), len(preyList), match_percentage)
 				# Update Prey
 				elif (check_collision(mouse_pos, buttons[1].get_pos())): 
@@ -107,7 +107,8 @@ def main():
 				# Stops the program running
 				sys.exit()
 				running = False
-		logic(simulation)
+				
+		logic()
 		if(check_end_condition()):
 			simulation = next_simulation(simulation)
 		draw()
