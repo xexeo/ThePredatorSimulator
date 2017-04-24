@@ -32,7 +32,7 @@ class AStar(object):
 		self.behaviour = behaviour
 		#Switch Behaviour: goal = position
 		if (behaviour == 1 or behaviour == 2):
-			goal = (320, 440, 0, 0) # Depends on pos - may need to move accordingly
+			goal = (320, 400, 0, 0) # Depends on pos - may need to move accordingly
 		elif (behaviour == 3 or behaviour == 4):
 			goal = (40, 220, 0, 0)
 		else:
@@ -108,8 +108,6 @@ class AStar(object):
 		return tempList
 	
 	def nearest_prey(self, prey, orig_pos):
-		print("Arrived at destination! Hunting prey!")
-		sys.stdout.flush()
 		# Find nearest prey in list
 		closest_prey = self.best_node(orig_pos, 0, prey)
 		# New route to closest prey
@@ -135,6 +133,10 @@ class AStar(object):
 				dir2 = speed[1] * -1
 			elif(orig_pos[1] == pos[1]):
 				dir2 = 0
+			if ((orig_pos[0] - pos[0]) == 1 or (orig_pos[0] - pos[0]) == -1):
+				dir1 = 1
+			if ((orig_pos[1] - pos[1]) == 1 or (orig_pos[1] - pos[1]) == -1):
+				dir2 = 1
 			if ((dir1, dir2) == (0, 0) and len(self.route) == 1):
 				self.nearest_prey(prey, orig_pos)
 				return self.move_to_node(orig_pos, speed, prey) # Re-run for new nodes
@@ -146,3 +148,4 @@ def check_collision(obj1, obj2):
 	obj1[0] < (obj2[0] + obj2[2]) and obj1[1] < (obj2[1] + obj2[3])):
 		return True
 	return False		
+	

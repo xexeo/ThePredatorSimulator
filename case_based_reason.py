@@ -1,5 +1,7 @@
 #This class is designed to handle the case-based reasoning algorithm
 
+import sys
+
 ## Properties:
 ##  - Take in Prey Count
 ##  - Take in Predator Count
@@ -8,12 +10,6 @@
 class Case_Based_Reasoning(object):
 	def __init__(self):
 		self.cases = []
-		#self.add_case(3, 2, 1, True)
-		#self.add_case(2, 5, 2, True)
-		#self.add_case(1, 1, 1, False)
-		#self.add_case(1, 2, 1, False)
-		#self.add_case(2, 3, 3, False)
-		#self.add_case(6, 1, 1, True)
 	
 	class Case(object):
 		def __init__(self, behaviour, preyCount, predCount, result):
@@ -49,7 +45,7 @@ class Case_Based_Reasoning(object):
 				tempList.append((match, case))
 		# Order list and return best match
 		if (len(tempList) > 0):
-			tempList.sort(reverse = True) # Sort Descending
+			tempList.sort(reverse=True, key=lambda tup: tup[0]) # Sort Descending
 			for case in tempList:
 				if(case[1].get_result()):
 					return case[1] # Pass across test where success was correct

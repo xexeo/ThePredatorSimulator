@@ -5,8 +5,8 @@ class Prey(object):
 	def __init__(self, image, pos):
 		## Parameters
 		self.speed = [1,1]
-		## Imagery
 		self.nearby_pred = (0,0,0,0)
+		## Imagery
 		self.image = image
 		self.rect = image.get_rect()
 		self.rect = self.rect.move(pos)
