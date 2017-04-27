@@ -35,12 +35,17 @@ class Prey(object):
 	
 	def check_nearby(self, predator):
 		pred_pos = predator.get_pos()
-		if (self.check_collision((pred_pos[0], pred_pos[1], 200, 200), self.rect)):
+		if (self.check_dist(pred_pos, self.rect)):
 			self.nearby_pred = pred_pos
 	
-	def check_collision(self, obj1, obj2):
-		if((obj1[0] + obj1[2]) > obj2[0] and (obj1[1] + obj1[3]) > obj2[1] and
-		obj1[0] < (obj2[0] + obj2[2]) and obj1[1] < (obj2[1] + obj2[3])):
+	def check_dist(self, obj1, obj2):
+		distX = obj1[0] - obj2[0]
+		if (distX < 0):
+			distX = distX * -1 
+		distY = obj1[1] - obj2[1]
+		if (distY < 0):
+			distY = distY * -1
+		if (distX + distY <= 100):
 			return True
 		return False
 	

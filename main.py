@@ -75,7 +75,7 @@ def main():
 	start = False
 	
 	simulation = 1
-	match_percentage = 90
+	match_percentage = 80
 	
 	tempPreyList = 1
 	tempPredList = 1
@@ -95,32 +95,28 @@ def main():
 				elif (check_collision(mouse_pos, buttons[1].get_pos())):
 					if (start == False):
 						preyList.remove(preyList[0])
-					else:
-						tempPreyList -= 1
-						if (tempPreyList < 0):
-							tempPreyList = 0
+					tempPreyList -= 1
+					if (tempPreyList < 0):
+						tempPreyList = 0
 				elif (check_collision(mouse_pos, buttons[2].get_pos())): 
 					if (start == False):
 						new_prey()
-					else:
-						tempPreyList += 1
-						if (tempPreyList > 9):
-							tempPreyList = 9
+					tempPreyList += 1
+					if (tempPreyList > 9):
+						tempPreyList = 9
 				# Update Predators
 				elif (check_collision(mouse_pos, buttons[3].get_pos())): 
 					if (start == False):
 						predList.remove(predList[0])
-					else:
-						tempPredList -= 1
-						if (tempPredList < 0):
-							tempPredList = 0
+					tempPredList -= 1
+					if (tempPredList < 0):
+						tempPredList = 0
 				elif (check_collision(mouse_pos, buttons[4].get_pos())): 
 					if (start == False):
 						new_predator()
-					else:
-						tempPredList += 1
-						if (tempPredList > 9):
-							tempPredList = 9
+					tempPredList += 1
+					if (tempPredList > 9):
+						tempPredList = 9
 				# Update Match Percentage
 				elif (check_collision(mouse_pos, buttons[5].get_pos())):
 					match_percentage -= 1
@@ -140,12 +136,13 @@ def main():
 			simulation = next_simulation(simulation, match_percentage)
 			while (len(predList) < tempPredList):
 				new_predator()
+				predList[(len(predList)-1)].select_logic(tempPredList, tempPreyList, match_percentage)
 			while (len(predList) > tempPredList):
-				predList.remove(predList[0])
+				predList.remove(predList[(len(predList)-1)])
 			while (len(preyList) < tempPreyList):
 				new_prey()
 			while (len(preyList) > tempPreyList):
-				preyList.remove(predList[0])	
+				preyList.remove(predList[(len(preyList)-1)])	
 		draw()
 
 class Label(object):
@@ -217,11 +214,9 @@ def new_predator():
 
 def new_prey():
 	if (len(preyList) < 9):
-		x = random.randrange(window_size[0])
-		while (x < 100 or x > 400):
-			x = random.randrange(window_size[0])
-		y = random.randrange(window_size[1])
-		while (y < 60 or y > 380):
+		x = random.randrange((window_size[0] - 40))
+		y = random.randrange((window_size[1] - 40))
+		while (y > 300):
 			y = random.randrange(window_size[1])
 		preyList.append(Prey(pygame.image.load("images/prey.png").convert(), [x, y]))	
 	

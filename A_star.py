@@ -32,11 +32,11 @@ class AStar(object):
 		self.behaviour = behaviour
 		#Switch Behaviour: goal = position
 		if (behaviour == 1 or behaviour == 2):
-			goal = (320, 400, 0, 0) # Depends on pos - may need to move accordingly
+			goal = (300, 400, 0, 0)
 		elif (behaviour == 3 or behaviour == 4):
-			goal = (40, 220, 0, 0)
+			goal = (50, 400, 0, 0)
 		else:
-			goal = (600, 220, 0, 0)
+			goal = (550, 400, 0, 0)
 		# Use behaviour to determine goal
 		self.route = self.find_quickest_route(orig_pos, goal)
 		print ("Route contains " + str(len(self.route)-1) + " routes")
@@ -133,10 +133,15 @@ class AStar(object):
 				dir2 = speed[1] * -1
 			elif(orig_pos[1] == pos[1]):
 				dir2 = 0
-			if ((orig_pos[0] - pos[0]) == 1 or (orig_pos[0] - pos[0]) == -1):
-				dir1 = 1
-			if ((orig_pos[1] - pos[1]) == 1 or (orig_pos[1] - pos[1]) == -1):
-				dir2 = 1
+			if (speed[0] > 1 or speed[1] > 1): 	
+				if ((orig_pos[0] - pos[0]) == 1):
+					dir1 = 1
+				elif((orig_pos[0] - pos[0]) == -1):
+					dir1 = -1					
+				if ((orig_pos[1] - pos[1]) == 1):
+					dir2 = 1
+				elif((orig_pos[1] - pos[1]) == -1):
+					dir2 = -1
 			if ((dir1, dir2) == (0, 0) and len(self.route) == 1):
 				self.nearest_prey(prey, orig_pos)
 				return self.move_to_node(orig_pos, speed, prey) # Re-run for new nodes
