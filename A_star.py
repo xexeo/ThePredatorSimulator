@@ -1,6 +1,8 @@
 #This class is designed to handle the A* path finding algorithm
 import sys
 
+window_size = width, height = 640, 480
+
 class AStar(object):
 	class Node(object):
 		def __init__(self, x, y, size):
@@ -39,8 +41,6 @@ class AStar(object):
 			goal = (550, 400, 0, 0)
 		# Use behaviour to determine goal
 		self.route = self.find_quickest_route(orig_pos, goal)
-		print ("Route contains " + str(len(self.route)-1) + " routes")
-		sys.stdout.flush()
 	
 	def find_quickest_route(self, orig_pos, goal):
 		move = 1 
@@ -108,8 +108,17 @@ class AStar(object):
 		return tempList
 	
 	def nearest_prey(self, prey, orig_pos):
+		tempPreyArray = []
+		for tempPrey in prey:
+			pos = tempPrey.get_pos()
+			if (pos[0] >= 0 and pos[1] >= 0 and
+			pos[0] <= window_size[0] and pos[1] <= window_size[1]):
+				tempPreyArray.append(tempPrey)
+		# Some prey is better than no prey
+		if (len(tempPreyArray) == 0):
+			tempPreyArray.append(prey[0])
 		# Find nearest prey in list
-		closest_prey = self.best_node(orig_pos, 0, prey)
+		closest_prey = self.best_node(orig_pos, 0, tempPreyArray)
 		# New route to closest prey
 		self.route = self.find_quickest_route(orig_pos, closest_prey[1].get_pos())
 		
@@ -119,8 +128,6 @@ class AStar(object):
 			pos = self.route[0].get_pos()
 			if (len(self.route) > 1):
 				if (orig_pos[0] == pos[0] and orig_pos[1] == pos[1]):
-					print("Reached node " + str(len(self.route)-1) + " " + str(pos))
-					sys.stdout.flush()
 					self.route.remove(self.route[0])
 				pos = self.route[0].get_pos()
 			dir1 = speed[0]

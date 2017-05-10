@@ -50,9 +50,6 @@ class Case_Based_Reasoning(object):
 				if(case[1].get_result()):
 					return case[1] # Pass across test where success was correct
 			tempCase = tempList[0]
-			print(tempCase[1])
-			print(tempCase[1].get_result())
-			sys.stdout.flush()
 			return (tempCase[1]) # Return first record, case
 		return False
 	

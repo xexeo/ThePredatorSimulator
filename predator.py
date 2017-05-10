@@ -58,6 +58,7 @@ class Predator:
 			self.update_speed(2, 2)
 		else:
 			self.update_speed(1, 1)
+		sys.stdout.flush()
 	
 	def get_pos(self):
 		return self.rect

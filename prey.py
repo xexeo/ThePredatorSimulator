@@ -45,7 +45,7 @@ class Prey(object):
 		distY = obj1[1] - obj2[1]
 		if (distY < 0):
 			distY = distY * -1
-		if (distX + distY <= 100):
+		if (distX + distY <= 150):
 			return True
 		return False
 	
